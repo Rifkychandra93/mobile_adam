@@ -110,7 +110,7 @@ export default function BookDetailScreen() {
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#1f2937" />
+            <Ionicons name="arrow-back" size={24} color="#1e293b" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Detail Buku</Text>
         </View>
@@ -122,7 +122,7 @@ export default function BookDetailScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#1f2937" />
+          <Ionicons name="arrow-back" size={24} color="#1e293b" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Detail Buku</Text>
       </View>
@@ -130,7 +130,7 @@ export default function BookDetailScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.bookCover}>
           <View style={styles.coverIcon}>
-            <Ionicons name="book" size={80} color="#6366f1" />
+            <Ionicons name="book" size={80} color="#3b82f6" />
           </View>
         </View>
 
@@ -148,7 +148,7 @@ export default function BookDetailScreen() {
               <Ionicons 
                 name={isAvailable ? "checkmark-circle" : "close-circle"} 
                 size={16} 
-                color={isAvailable ? "#065f46" : "#991b1b"} 
+                color={isAvailable ? "#1e40af" : "#3730a3"} 
               />
               <Text style={[styles.statusText, isAvailable ? styles.availableText : styles.borrowedText]}>
                 {isAvailable ? 'Tersedia' : 'Sedang Dipinjam'}
@@ -161,7 +161,7 @@ export default function BookDetailScreen() {
           <Text style={styles.sectionTitle}>Tentang Buku</Text>
           <View style={styles.infoCard}>
             <View style={styles.infoRow}>
-              <Ionicons name="person-outline" size={20} color="#6b7280" />
+              <Ionicons name="person-outline" size={20} color="#64748b" />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Penulis</Text>
                 <Text style={styles.infoValue}>{book.author}</Text>
@@ -171,7 +171,7 @@ export default function BookDetailScreen() {
             <View style={styles.divider} />
             
             <View style={styles.infoRow}>
-              <Ionicons name="albums-outline" size={20} color="#6b7280" />
+              <Ionicons name="albums-outline" size={20} color="#64748b" />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Kategori</Text>
                 <Text style={styles.infoValue}>{book.category}</Text>
@@ -181,7 +181,7 @@ export default function BookDetailScreen() {
             <View style={styles.divider} />
             
             <View style={styles.infoRow}>
-              <Ionicons name="information-circle-outline" size={20} color="#6b7280" />
+              <Ionicons name="information-circle-outline" size={20} color="#64748b" />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Status</Text>
                 <Text style={styles.infoValue}>{isAvailable ? 'Tersedia untuk dipinjam' : 'Sedang Anda pinjam'}</Text>
@@ -226,7 +226,7 @@ export default function BookDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#eff6ff',
   },
   header: {
     flexDirection: 'row',
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#dbeafe',
   },
   backButton: {
     marginRight: 16,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   content: {
     flex: 1,
@@ -257,11 +257,11 @@ const styles = StyleSheet.create({
   coverIcon: {
     width: 200,
     height: 280,
-    backgroundColor: '#eef2ff',
+    backgroundColor: '#dbeafe',
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -274,17 +274,17 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#dbeafe',
   },
   bookTitle: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 8,
   },
   bookAuthor: {
     fontSize: 16,
-    color: '#6b7280',
+    color: '#64748b',
     marginBottom: 16,
   },
   badges: {
@@ -314,20 +314,20 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   availableBadge: {
-    backgroundColor: '#d1fae5',
+    backgroundColor: '#bfdbfe',
   },
   borrowedBadge: {
-    backgroundColor: '#fee2e2',
+    backgroundColor: '#e0e7ff',
   },
   statusText: {
     fontSize: 14,
     fontWeight: '600',
   },
   availableText: {
-    color: '#065f46',
+    color: '#1e40af',
   },
   borrowedText: {
-    color: '#991b1b',
+    color: '#3730a3',
   },
   section: {
     padding: 20,
@@ -335,14 +335,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 12,
   },
   infoCard: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -362,23 +362,23 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#64748b',
     marginBottom: 4,
   },
   infoValue: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   divider: {
     height: 1,
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#dbeafe',
   },
   descriptionCard: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: 15,
-    color: '#4b5563',
+    color: '#64748b',
     lineHeight: 24,
   },
   footer: {
@@ -397,17 +397,17 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     backgroundColor: '#ffffff',
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
+    borderTopColor: '#dbeafe',
   },
   borrowButton: {
     flexDirection: 'row',
-    backgroundColor: '#6366f1',
+    backgroundColor: '#3b82f6',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    shadowColor: '#6366f1',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -417,8 +417,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   borrowButtonDisabled: {
-    backgroundColor: '#9ca3af',
-    shadowColor: '#9ca3af',
+    backgroundColor: '#94a3b8',
+    shadowColor: '#94a3b8',
   },
   borrowButtonText: {
     color: '#ffffff',

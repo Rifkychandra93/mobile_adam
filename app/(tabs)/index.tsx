@@ -133,23 +133,23 @@ export default function HomeScreen() {
           <Text style={styles.userName}>{userName || 'User'}</Text>
         </View>
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Ionicons name="log-out-outline" size={24} color="#ef4444" />
+          <Ionicons name="log-out-outline" size={24} color="#3b82f6" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.statsContainer}>
         <View style={styles.statCard}>
-          <Ionicons name="book-outline" size={32} color="#6366f1" />
+          <Ionicons name="book-outline" size={32} color="#3b82f6" />
           <Text style={styles.statNumber}>{books.length}</Text>
           <Text style={styles.statLabel}>Total Books</Text>
         </View>
         <View style={styles.statCard}>
-          <Ionicons name="checkmark-circle-outline" size={32} color="#10b981" />
+          <Ionicons name="checkmark-circle-outline" size={32} color="#60a5fa" />
           <Text style={styles.statNumber}>{books.filter(b => b.available).length}</Text>
           <Text style={styles.statLabel}>Available</Text>
         </View>
         <View style={styles.statCard}>
-          <Ionicons name="time-outline" size={32} color="#f59e0b" />
+          <Ionicons name="time-outline" size={32} color="#93c5fd" />
           <Text style={styles.statNumber}>{books.filter(b => !b.available).length}</Text>
           <Text style={styles.statLabel}>Borrowed</Text>
         </View>
@@ -157,7 +157,7 @@ export default function HomeScreen() {
 
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Available Books</Text>
-        <Ionicons name="library-outline" size={24} color="#6366f1" />
+        <Ionicons name="library-outline" size={24} color="#3b82f6" />
       </View>
 
       <ScrollView style={styles.booksList} showsVerticalScrollIndicator={false}>
@@ -178,7 +178,7 @@ export default function HomeScreen() {
             activeOpacity={0.7}
           >
             <View style={styles.bookIcon}>
-              <Ionicons name="book" size={32} color="#6366f1" />
+              <Ionicons name="book" size={32} color="#3b82f6" />
             </View>
             <View style={styles.bookInfo}>
               <Text style={styles.bookTitle}>{book.title}</Text>
@@ -195,7 +195,7 @@ export default function HomeScreen() {
               </View>
             </View>
             <View style={styles.arrowIcon}>
-              <Ionicons name="chevron-forward" size={24} color="#9ca3af" />
+              <Ionicons name="chevron-forward" size={24} color="#64748b" />
             </View>
           </TouchableOpacity>
         ))}
@@ -207,7 +207,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#eff6ff',
   },
   header: {
     flexDirection: 'row',
@@ -217,16 +217,16 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#dbeafe',
   },
   greeting: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#64748b',
   },
   userName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   logoutButton: {
     padding: 8,
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -254,12 +254,12 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginTop: 8,
   },
   statLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#64748b',
     marginTop: 4,
   },
   sectionHeader: {
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   booksList: {
     flex: 1,
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   bookIcon: {
     width: 60,
     height: 80,
-    backgroundColor: '#eef2ff',
+    backgroundColor: '#dbeafe',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -309,12 +309,12 @@ const styles = StyleSheet.create({
   bookTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 4,
   },
   bookAuthor: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#64748b',
     marginBottom: 8,
   },
   bookMeta: {
@@ -338,20 +338,20 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   availableBadge: {
-    backgroundColor: '#d1fae5',
+    backgroundColor: '#bfdbfe',
   },
   borrowedBadge: {
-    backgroundColor: '#fee2e2',
+    backgroundColor: '#e0e7ff',
   },
   statusText: {
     fontSize: 12,
     fontWeight: '500',
   },
   availableText: {
-    color: '#065f46',
+    color: '#1e40af',
   },
   borrowedText: {
-    color: '#991b1b',
+    color: '#3730a3',
   },
   arrowIcon: {
     justifyContent: 'center',

@@ -144,7 +144,7 @@ export default function BorrowingScreen() {
         {activeTab === 'current' ? (
           currentBorrowed.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <Ionicons name="book-outline" size={80} color="#d1d5db" />
+              <Ionicons name="book-outline" size={80} color="#cbd5e1" />
               <Text style={styles.emptyText}>Belum ada buku yang dipinjam</Text>
               <Text style={styles.emptySubtext}>Pinjam buku dari halaman Library</Text>
             </View>
@@ -152,7 +152,7 @@ export default function BorrowingScreen() {
             currentBorrowed.map((book) => (
               <View key={book.id} style={styles.bookCard}>
                 <View style={styles.bookIcon}>
-                  <Ionicons name="book" size={32} color="#6366f1" />
+                  <Ionicons name="book" size={32} color="#3b82f6" />
                 </View>
                 <View style={styles.bookInfo}>
                   <Text style={styles.bookTitle}>{book.title}</Text>
@@ -162,7 +162,7 @@ export default function BorrowingScreen() {
                       <Text style={styles.categoryText}>{book.category}</Text>
                     </View>
                     <View style={styles.dateBadge}>
-                      <Ionicons name="calendar-outline" size={12} color="#6b7280" />
+                      <Ionicons name="calendar-outline" size={12} color="#64748b" />
                       <Text style={styles.dateText}>{formatDate(book.borrowDate)}</Text>
                     </View>
                   </View>
@@ -171,7 +171,7 @@ export default function BorrowingScreen() {
                   style={styles.returnButton}
                   onPress={() => handleReturnBook(book)}
                 >
-                  <Ionicons name="return-up-back" size={24} color="#10b981" />
+                  <Ionicons name="return-up-back" size={24} color="#3b82f6" />
                   <Text style={styles.returnButtonText}>Kembalikan</Text>
                 </TouchableOpacity>
               </View>
@@ -180,7 +180,7 @@ export default function BorrowingScreen() {
         ) : (
           history.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <Ionicons name="time-outline" size={80} color="#d1d5db" />
+              <Ionicons name="time-outline" size={80} color="#cbd5e1" />
               <Text style={styles.emptyText}>Belum ada riwayat peminjaman</Text>
               <Text style={styles.emptySubtext}>Riwayat akan muncul setelah mengembalikan buku</Text>
             </View>
@@ -188,19 +188,19 @@ export default function BorrowingScreen() {
             history.map((book, index) => (
               <View key={`${book.id}-${index}`} style={styles.historyCard}>
                 <View style={styles.historyIcon}>
-                  <Ionicons name="checkmark-circle" size={32} color="#10b981" />
+                  <Ionicons name="checkmark-circle" size={32} color="#3b82f6" />
                 </View>
                 <View style={styles.historyInfo}>
                   <Text style={styles.bookTitle}>{book.title}</Text>
                   <Text style={styles.bookAuthor}>{book.author}</Text>
                   <View style={styles.historyDates}>
                     <View style={styles.dateRow}>
-                      <Ionicons name="arrow-down-circle-outline" size={14} color="#6b7280" />
+                      <Ionicons name="arrow-down-circle-outline" size={14} color="#64748b" />
                       <Text style={styles.historyDateLabel}>Dipinjam: </Text>
                       <Text style={styles.historyDateValue}>{formatDate(book.borrowDate)}</Text>
                     </View>
                     <View style={styles.dateRow}>
-                      <Ionicons name="arrow-up-circle-outline" size={14} color="#10b981" />
+                      <Ionicons name="arrow-up-circle-outline" size={14} color="#3b82f6" />
                       <Text style={styles.historyDateLabel}>Dikembalikan: </Text>
                       <Text style={styles.historyDateValue}>{formatDate(book.returnDate)}</Text>
                     </View>
@@ -218,7 +218,7 @@ export default function BorrowingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#eff6ff',
   },
   header: {
     paddingTop: 60,
@@ -226,12 +226,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#dbeafe',
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   tabContainer: {
     flexDirection: 'row',
@@ -245,16 +245,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#f1f5f9',
     alignItems: 'center',
   },
   activeTab: {
-    backgroundColor: '#6366f1',
+    backgroundColor: '#3b82f6',
   },
   tabText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6b7280',
+    color: '#64748b',
   },
   activeTabText: {
     color: '#ffffff',
@@ -272,12 +272,12 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#6b7280',
+    color: '#64748b',
     marginTop: 16,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#9ca3af',
+    color: '#94a3b8',
     marginTop: 8,
   },
   bookCard: {
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   bookIcon: {
     width: 60,
     height: 80,
-    backgroundColor: '#eef2ff',
+    backgroundColor: '#dbeafe',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -311,12 +311,12 @@ const styles = StyleSheet.create({
   bookTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 4,
   },
   bookAuthor: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#64748b',
     marginBottom: 8,
   },
   bookMeta: {
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 11,
-    color: '#6b7280',
+    color: '#64748b',
   },
   returnButton: {
     justifyContent: 'center',
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
   },
   returnButtonText: {
     fontSize: 11,
-    color: '#10b981',
+    color: '#3b82f6',
     fontWeight: '600',
   },
   historyCard: {
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   historyIcon: {
     width: 60,
     height: 80,
-    backgroundColor: '#d1fae5',
+    backgroundColor: '#dbeafe',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -394,11 +394,11 @@ const styles = StyleSheet.create({
   },
   historyDateLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#64748b',
   },
   historyDateValue: {
     fontSize: 12,
-    color: '#1f2937',
+    color: '#1e293b',
     fontWeight: '500',
   },
 });

@@ -76,7 +76,7 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
-          <Ionicons name="library" size={80} color="#6366f1" />
+          <Ionicons name="library" size={80} color="#3b82f6" />
           <Text style={styles.title}>PERPUS</Text>
           <Text style={styles.subtitle}>Library Management System</Text>
         </View>
@@ -85,7 +85,7 @@ export default function LoginScreen() {
           <Text style={styles.formTitle}>Welcome Back</Text>
 
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={20} color="#9ca3af" style={styles.inputIcon} />
+            <Ionicons name="mail-outline" size={20} color="#64748b" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -97,7 +97,7 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={20} color="#9ca3af" style={styles.inputIcon} />
+            <Ionicons name="lock-closed-outline" size={20} color="#64748b" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -107,7 +107,7 @@ export default function LoginScreen() {
               autoCapitalize="none"
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-              <Ionicons name={showPassword ? "eye-outline" : "eye-off-outline"} size={20} color="#9ca3af" />
+              <Ionicons name={showPassword ? "eye-outline" : "eye-off-outline"} size={20} color="#64748b" />
             </TouchableOpacity>
           </View>
 
@@ -130,7 +130,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#eff6ff',
   },
   scrollContent: {
     flexGrow: 1,
@@ -144,19 +144,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#6366f1',
+    color: '#3b82f6',
     marginTop: 16,
   },
   subtitle: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#64748b',
     marginTop: 4,
   },
   formContainer: {
     backgroundColor: '#ffffff',
     borderRadius: 16,
     padding: 24,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -168,14 +168,14 @@ const styles = StyleSheet.create({
   formTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 24,
     textAlign: 'center',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f3f4f6',
+    backgroundColor: '#f1f5f9',
     borderRadius: 12,
     marginBottom: 16,
     paddingHorizontal: 16,
@@ -187,19 +187,19 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#1f2937',
+    color: '#1e293b',
   },
   eyeIcon: {
     padding: 4,
   },
   loginButton: {
-    backgroundColor: '#6366f1',
+    backgroundColor: '#3b82f6',
     borderRadius: 12,
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
-    shadowColor: '#6366f1',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -219,11 +219,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   registerText: {
-    color: '#6b7280',
+    color: '#64748b',
     fontSize: 14,
   },
   registerLink: {
-    color: '#6366f1',
+    color: '#3b82f6',
     fontSize: 14,
     fontWeight: '600',
   },

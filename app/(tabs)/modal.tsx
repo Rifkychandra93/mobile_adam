@@ -89,7 +89,7 @@ export default function ProfileScreen() {
         <View style={styles.profileCard}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
-              <Ionicons name="person" size={60} color="#6366f1" />
+              <Ionicons name="person" size={60} color="#3b82f6" />
             </View>
           </View>
           <Text style={styles.userName}>{userData?.fullName || 'User'}</Text>
@@ -102,7 +102,7 @@ export default function ProfileScreen() {
           <View style={styles.infoCard}>
             <View style={styles.infoRow}>
               <View style={styles.infoIconContainer}>
-                <Ionicons name="person-outline" size={24} color="#6366f1" />
+                <Ionicons name="person-outline" size={24} color="#3b82f6" />
               </View>
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Nama Lengkap</Text>
@@ -114,7 +114,7 @@ export default function ProfileScreen() {
 
             <View style={styles.infoRow}>
               <View style={styles.infoIconContainer}>
-                <Ionicons name="mail-outline" size={24} color="#6366f1" />
+                <Ionicons name="mail-outline" size={24} color="#3b82f6" />
               </View>
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Email</Text>
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
 
             <View style={styles.infoRow}>
               <View style={styles.infoIconContainer}>
-                <Ionicons name="calendar-outline" size={24} color="#6366f1" />
+                <Ionicons name="calendar-outline" size={24} color="#3b82f6" />
               </View>
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Member Sejak</Text>
@@ -141,13 +141,13 @@ export default function ProfileScreen() {
           
           <View style={styles.statsGrid}>
             <View style={styles.statBox}>
-              <Ionicons name="book" size={32} color="#6366f1" />
+              <Ionicons name="book" size={32} color="#3b82f6" />
               <Text style={styles.statNumber}>{borrowedCount}</Text>
               <Text style={styles.statLabel}>Sedang Dipinjam</Text>
             </View>
             
             <View style={styles.statBox}>
-              <Ionicons name="checkmark-circle" size={32} color="#10b981" />
+              <Ionicons name="checkmark-circle" size={32} color="#60a5fa" />
               <Text style={styles.statNumber}>{historyCount}</Text>
               <Text style={styles.statLabel}>Total Riwayat</Text>
             </View>
@@ -173,7 +173,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: '#eff6ff',
   },
   header: {
     paddingTop: 60,
@@ -181,12 +181,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: '#dbeafe',
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   content: {
     flex: 1,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     padding: 24,
     alignItems: 'center',
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -214,21 +214,21 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#eef2ff',
+    backgroundColor: '#dbeafe',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 4,
-    borderColor: '#6366f1',
+    borderColor: '#3b82f6',
   },
   userName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 4,
   },
   userEmail: {
     fontSize: 16,
-    color: '#6b7280',
+    color: '#64748b',
   },
   section: {
     marginBottom: 16,
@@ -236,14 +236,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginBottom: 12,
   },
   infoCard: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#eef2ff',
+    backgroundColor: '#dbeafe',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -271,17 +271,17 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#64748b',
     marginBottom: 4,
   },
   infoValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
+    color: '#1e293b',
   },
   divider: {
     height: 1,
-    backgroundColor: '#e5e7eb',
+    backgroundColor: '#dbeafe',
   },
   statsGrid: {
     flexDirection: 'row',
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -305,24 +305,24 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1f2937',
+    color: '#1e293b',
     marginTop: 8,
   },
   statLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#64748b',
     marginTop: 4,
     textAlign: 'center',
   },
   logoutButton: {
     flexDirection: 'row',
-    backgroundColor: '#ef4444',
+    backgroundColor: '#3b82f6',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    shadowColor: '#ef4444',
+    shadowColor: '#3b82f6',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -342,11 +342,11 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#64748b',
     marginBottom: 4,
   },
   versionText: {
     fontSize: 12,
-    color: '#9ca3af',
+    color: '#94a3b8',
   },
 });
