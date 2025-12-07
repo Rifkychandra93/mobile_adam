@@ -1,98 +1,361 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  category: string;
+  available: boolean;
+}
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
+  const [userName, setUserName] = useState('');
+  const [books, setBooks] = useState<Book[]>([
+    {
+      id: '1',
+      title: 'To Kill a Mockingbird',
+      author: 'Harper Lee',
+      category: 'Fiction',
+      available: true,
+    },
+    {
+      id: '2',
+      title: '1984',
+      author: 'George Orwell',
+      category: 'Fiction',
+      available: true,
+    },
+    {
+      id: '3',
+      title: 'The Great Gatsby',
+      author: 'F. Scott Fitzgerald',
+      category: 'Fiction',
+      available: true,
+    },
+    {
+      id: '4',
+      title: 'Pride and Prejudice',
+      author: 'Jane Austen',
+      category: 'Romance',
+      available: true,
+    },
+    {
+      id: '5',
+      title: 'The Catcher in the Rye',
+      author: 'J.D. Salinger',
+      category: 'Fiction',
+      available: true,
+    },
+    {
+      id: '6',
+      title: 'Harry Potter and the Sorcerer\'s Stone',
+      author: 'J.K. Rowling',
+      category: 'Fantasy',
+      available: true,
+    },
+  ]);
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  useFocusEffect(
+    useCallback(() => {
+      loadUserData();
+      loadBorrowedBooks();
+    }, [])
+  );
+
+  const loadUserData = async () => {
+    try {
+      const currentUser = await AsyncStorage.getItem('currentUser');
+      if (currentUser) {
+        const user = JSON.parse(currentUser);
+        setUserName(user.fullName);
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  };
+
+  const loadBorrowedBooks = async () => {
+    try {
+      const borrowed = await AsyncStorage.getItem('borrowedBooks');
+      if (borrowed) {
+        const borrowedIds = JSON.parse(borrowed);
+        setBooks(prevBooks =>
+          prevBooks.map(book => ({
+            ...book,
+            available: !borrowedIds.includes(book.id),
+          }))
+        );
+      }
+    } catch (error) {
+      console.error('Error loading borrowed books:', error);
+    }
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          onPress: async () => {
+            await AsyncStorage.removeItem('userToken');
+            await AsyncStorage.removeItem('currentUser');
+            router.replace('/login');
+          },
+        },
+      ]
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.greeting}>Hello,</Text>
+          <Text style={styles.userName}>{userName || 'User'}</Text>
+        </View>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Ionicons name="log-out-outline" size={24} color="#ef4444" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.statsContainer}>
+        <View style={styles.statCard}>
+          <Ionicons name="book-outline" size={32} color="#6366f1" />
+          <Text style={styles.statNumber}>{books.length}</Text>
+          <Text style={styles.statLabel}>Total Books</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Ionicons name="checkmark-circle-outline" size={32} color="#10b981" />
+          <Text style={styles.statNumber}>{books.filter(b => b.available).length}</Text>
+          <Text style={styles.statLabel}>Available</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Ionicons name="time-outline" size={32} color="#f59e0b" />
+          <Text style={styles.statNumber}>{books.filter(b => !b.available).length}</Text>
+          <Text style={styles.statLabel}>Borrowed</Text>
+        </View>
+      </View>
+
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Available Books</Text>
+        <Ionicons name="library-outline" size={24} color="#6366f1" />
+      </View>
+
+      <ScrollView style={styles.booksList} showsVerticalScrollIndicator={false}>
+        {books.map((book) => (
+          <TouchableOpacity 
+            key={book.id} 
+            style={styles.bookCard}
+            onPress={() => router.push({
+              pathname: '/book-detail',
+              params: {
+                id: book.id,
+                title: book.title,
+                author: book.author,
+                category: book.category,
+                available: book.available.toString(),
+              },
+            })}
+            activeOpacity={0.7}
+          >
+            <View style={styles.bookIcon}>
+              <Ionicons name="book" size={32} color="#6366f1" />
+            </View>
+            <View style={styles.bookInfo}>
+              <Text style={styles.bookTitle}>{book.title}</Text>
+              <Text style={styles.bookAuthor}>{book.author}</Text>
+              <View style={styles.bookMeta}>
+                <View style={styles.categoryBadge}>
+                  <Text style={styles.categoryText}>{book.category}</Text>
+                </View>
+                <View style={[styles.statusBadge, book.available ? styles.availableBadge : styles.borrowedBadge]}>
+                  <Text style={[styles.statusText, book.available ? styles.availableText : styles.borrowedText]}>
+                    {book.available ? 'Available' : 'Borrowed'}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.arrowIcon}>
+              <Ionicons name="chevron-forward" size={24} color="#9ca3af" />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: '#f9fafb',
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 60,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+  },
+  greeting: {
+    fontSize: 14,
+    color: '#6b7280',
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1f2937',
+  },
+  logoutButton: {
+    padding: 8,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    padding: 20,
+    gap: 12,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginTop: 8,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#6b7280',
+    marginTop: 4,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1f2937',
+  },
+  booksList: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  bookCard: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  bookIcon: {
+    width: 60,
+    height: 80,
+    backgroundColor: '#eef2ff',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  bookInfo: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  bookTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1f2937',
+    marginBottom: 4,
+  },
+  bookAuthor: {
+    fontSize: 14,
+    color: '#6b7280',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  bookMeta: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  categoryBadge: {
+    backgroundColor: '#dbeafe',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  categoryText: {
+    fontSize: 12,
+    color: '#1e40af',
+    fontWeight: '500',
+  },
+  statusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  availableBadge: {
+    backgroundColor: '#d1fae5',
+  },
+  borrowedBadge: {
+    backgroundColor: '#fee2e2',
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  availableText: {
+    color: '#065f46',
+  },
+  borrowedText: {
+    color: '#991b1b',
+  },
+  arrowIcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 12,
   },
 });

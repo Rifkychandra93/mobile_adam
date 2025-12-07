@@ -1,112 +1,404 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+interface BorrowedBook {
+  id: string;
+  title: string;
+  author: string;
+  category: string;
+  borrowDate: string;
+}
 
-export default function TabTwoScreen() {
+interface HistoryBook extends BorrowedBook {
+  returnDate: string;
+}
+
+export default function BorrowingScreen() {
+  const [currentBorrowed, setCurrentBorrowed] = useState<BorrowedBook[]>([]);
+  const [history, setHistory] = useState<HistoryBook[]>([]);
+  const [activeTab, setActiveTab] = useState<'current' | 'history'>('current');
+
+  useFocusEffect(
+    useCallback(() => {
+      loadBorrowedBooks();
+      loadHistory();
+    }, [])
+  );
+
+  const loadBorrowedBooks = async () => {
+    try {
+      const borrowed = await AsyncStorage.getItem('currentBorrowed');
+      if (borrowed) {
+        setCurrentBorrowed(JSON.parse(borrowed));
+      } else {
+        setCurrentBorrowed([]);
+      }
+    } catch (error) {
+      console.error('Error loading borrowed books:', error);
+    }
+  };
+
+  const loadHistory = async () => {
+    try {
+      const historyData = await AsyncStorage.getItem('borrowHistory');
+      if (historyData) {
+        setHistory(JSON.parse(historyData));
+      } else {
+        setHistory([]);
+      }
+    } catch (error) {
+      console.error('Error loading history:', error);
+    }
+  };
+
+  const handleReturnBook = async (book: BorrowedBook) => {
+    Alert.alert(
+      'Return Book',
+      `Are you sure you want to return "${book.title}"?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Return',
+          onPress: async () => {
+            try {
+              // Remove from borrowed books
+              const borrowed = await AsyncStorage.getItem('borrowedBooks');
+              const borrowedBooks = borrowed ? JSON.parse(borrowed) : [];
+              const updatedBorrowedBooks = borrowedBooks.filter((id: string) => id !== book.id);
+              await AsyncStorage.setItem('borrowedBooks', JSON.stringify(updatedBorrowedBooks));
+
+              // Remove from current borrowed
+              const updatedCurrentBorrowed = currentBorrowed.filter(b => b.id !== book.id);
+              await AsyncStorage.setItem('currentBorrowed', JSON.stringify(updatedCurrentBorrowed));
+              setCurrentBorrowed(updatedCurrentBorrowed);
+
+              // Add to history
+              const historyData = await AsyncStorage.getItem('borrowHistory');
+              const historyList: HistoryBook[] = historyData ? JSON.parse(historyData) : [];
+              historyList.unshift({
+                ...book,
+                returnDate: new Date().toISOString(),
+              });
+              await AsyncStorage.setItem('borrowHistory', JSON.stringify(historyList));
+              setHistory(historyList);
+
+              Alert.alert('Success', `You have returned "${book.title}"`);
+            } catch (error) {
+              console.error('Error returning book:', error);
+              Alert.alert('Error', 'Failed to return book');
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Peminjaman Buku</Text>
+      </View>
+
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'current' && styles.activeTab]}
+          onPress={() => setActiveTab('current')}
+        >
+          <Text style={[styles.tabText, activeTab === 'current' && styles.activeTabText]}>
+            Sedang Dipinjam ({currentBorrowed.length})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'history' && styles.activeTab]}
+          onPress={() => setActiveTab('history')}
+        >
+          <Text style={[styles.tabText, activeTab === 'history' && styles.activeTabText]}>
+            Riwayat ({history.length})
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {activeTab === 'current' ? (
+          currentBorrowed.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Ionicons name="book-outline" size={80} color="#d1d5db" />
+              <Text style={styles.emptyText}>Belum ada buku yang dipinjam</Text>
+              <Text style={styles.emptySubtext}>Pinjam buku dari halaman Library</Text>
+            </View>
+          ) : (
+            currentBorrowed.map((book) => (
+              <View key={book.id} style={styles.bookCard}>
+                <View style={styles.bookIcon}>
+                  <Ionicons name="book" size={32} color="#6366f1" />
+                </View>
+                <View style={styles.bookInfo}>
+                  <Text style={styles.bookTitle}>{book.title}</Text>
+                  <Text style={styles.bookAuthor}>{book.author}</Text>
+                  <View style={styles.bookMeta}>
+                    <View style={styles.categoryBadge}>
+                      <Text style={styles.categoryText}>{book.category}</Text>
+                    </View>
+                    <View style={styles.dateBadge}>
+                      <Ionicons name="calendar-outline" size={12} color="#6b7280" />
+                      <Text style={styles.dateText}>{formatDate(book.borrowDate)}</Text>
+                    </View>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={styles.returnButton}
+                  onPress={() => handleReturnBook(book)}
+                >
+                  <Ionicons name="return-up-back" size={24} color="#10b981" />
+                  <Text style={styles.returnButtonText}>Kembalikan</Text>
+                </TouchableOpacity>
+              </View>
+            ))
+          )
+        ) : (
+          history.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Ionicons name="time-outline" size={80} color="#d1d5db" />
+              <Text style={styles.emptyText}>Belum ada riwayat peminjaman</Text>
+              <Text style={styles.emptySubtext}>Riwayat akan muncul setelah mengembalikan buku</Text>
+            </View>
+          ) : (
+            history.map((book, index) => (
+              <View key={`${book.id}-${index}`} style={styles.historyCard}>
+                <View style={styles.historyIcon}>
+                  <Ionicons name="checkmark-circle" size={32} color="#10b981" />
+                </View>
+                <View style={styles.historyInfo}>
+                  <Text style={styles.bookTitle}>{book.title}</Text>
+                  <Text style={styles.bookAuthor}>{book.author}</Text>
+                  <View style={styles.historyDates}>
+                    <View style={styles.dateRow}>
+                      <Ionicons name="arrow-down-circle-outline" size={14} color="#6b7280" />
+                      <Text style={styles.historyDateLabel}>Dipinjam: </Text>
+                      <Text style={styles.historyDateValue}>{formatDate(book.borrowDate)}</Text>
+                    </View>
+                    <View style={styles.dateRow}>
+                      <Ionicons name="arrow-up-circle-outline" size={14} color="#10b981" />
+                      <Text style={styles.historyDateLabel}>Dikembalikan: </Text>
+                      <Text style={styles.historyDateValue}>{formatDate(book.returnDate)}</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            ))
+          )
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    backgroundColor: '#f9fafb',
   },
-  titleContainer: {
+  header: {
+    paddingTop: 60,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#1f2937',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    paddingBottom: 12,
+    gap: 12,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: '#f3f4f6',
+    alignItems: 'center',
+  },
+  activeTab: {
+    backgroundColor: '#6366f1',
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6b7280',
+  },
+  activeTabText: {
+    color: '#ffffff',
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 80,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#6b7280',
+    marginTop: 16,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: '#9ca3af',
+    marginTop: 8,
+  },
+  bookCard: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  bookIcon: {
+    width: 60,
+    height: 80,
+    backgroundColor: '#eef2ff',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  bookInfo: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  bookTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1f2937',
+    marginBottom: 4,
+  },
+  bookAuthor: {
+    fontSize: 14,
+    color: '#6b7280',
+    marginBottom: 8,
+  },
+  bookMeta: {
     flexDirection: 'row',
     gap: 8,
+    alignItems: 'center',
+  },
+  categoryBadge: {
+    backgroundColor: '#dbeafe',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  categoryText: {
+    fontSize: 12,
+    color: '#1e40af',
+    fontWeight: '500',
+  },
+  dateBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  dateText: {
+    fontSize: 11,
+    color: '#6b7280',
+  },
+  returnButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    gap: 4,
+  },
+  returnButtonText: {
+    fontSize: 11,
+    color: '#10b981',
+    fontWeight: '600',
+  },
+  historyCard: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  historyIcon: {
+    width: 60,
+    height: 80,
+    backgroundColor: '#d1fae5',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  historyInfo: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  historyDates: {
+    marginTop: 8,
+    gap: 4,
+  },
+  dateRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  historyDateLabel: {
+    fontSize: 12,
+    color: '#6b7280',
+  },
+  historyDateValue: {
+    fontSize: 12,
+    color: '#1f2937',
+    fontWeight: '500',
   },
 });
